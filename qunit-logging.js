@@ -1,11 +1,21 @@
-$(document).ready(function() {
+/*
+ * QUnit Logging
+ * Copyright (c) 2013 Martin Knopf Licensed under the MIT license.
+ *
+ * jQuery, QUnit
+ * Copyright 2013 The jQuery Foundation.
+ */
+ 
+ $(document).ready(function() {
+
+  var isMSIE = /msie/.test(navigator.userAgent.toLowerCase());
   
   QUnit.moduleStart = function(module) {
-    console.group('Module: ' + module.name);
+    if(!isMSIE) console.group('Module: ' + module.name);
   };
   
   QUnit.moduleDone = function(test) {
-    console.groupEnd();
+    if(!isMSIE) console.groupEnd();
   };
   
   QUnit.done = function(details) {
@@ -16,15 +26,14 @@ $(document).ready(function() {
    * Logging of QUnit assertions.
    */
   QUnit.log(function(details) {
-    var isMSIE = /msie/.test(navigator.userAgent.toLowerCase()),
-      colorCSS = 'background:' + (details.result ? 'green' : 'red') + ';color:white';
+    var colorCSS = 'background:' + (details.result ? 'green' : 'red') + ';color:white';
 
     details.message = details.message ? ': ' + details.message : ' ';
     if(details.result) {
       if(isMSIE) {
         console.log('[+++] %s: %s %s', details.module, details.name, details.message);
       } else {
-        console.log('%c[+++]', colorCSS, details.module, ':',  details.name, details.message);
+        console.log('%c[+++]', colorCSS, details.name, details.message);
       }
     } else {
       if(isMSIE) {
@@ -33,7 +42,7 @@ $(document).ready(function() {
         else
           console.error('[---] %s: %s %s\n%s', details.module, details.name, details.message, details.source);
       } else {
-        console.group('%c[---]', colorCSS, details.module, ':', details.name, details.message);
+        console.group('%c[---]', colorCSS, details.name, details.message);
         if(details.actual && details.expected)
           console.log('(actual = %s, expected = %s)', details.actual, details.expected);
         console.log(details.source);
