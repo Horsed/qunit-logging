@@ -21,4 +21,4 @@ Include in your html:
 
 ##License
 
-Copyright (c) 2013 Martin Knopf Licensed under the MIT license.
+Copyright (c) 2014 Martin Knopf Licensed under the MIT license.
